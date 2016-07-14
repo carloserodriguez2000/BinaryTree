@@ -1,5 +1,5 @@
 
-'use strict'; 
+
 
 //=========================================
 // unbalance tree
@@ -15,61 +15,36 @@ function TreeNode(value){
     this.value = value;
 }
 
-function valIsLessThan (toInsertVal, nodeVal ){
-    if(toInsertVal <= nodeVal) { return true;}
-    else {return false;}
-}
-function addNode(PNode,pValue){
-    if(valIsLessThan(pValue,PNode.value )){ 
-        PNode.left = new TreeNode(pValue);
-        console.log( "Left: ", pValue); 
+function AddNode(pTheRoot,PNode,pValue){
+    if(PNode === null){
+        PNode = new TreeNode(pValue);
+        currentNode = pTheRoot;
     }
     else{ 
-        PNode.right = new TreeNode(pValue);
-            console.log( "Right: ", pValue); 
+        currentNode= PNode;
     }
-}
-
-function findLeaveNode(pTheRoot, pValue)
-{
-    var currentNode = pTheRoot;
-    var previousNode = null;
-    do{                             // navigate left OR right and add node on a new leave.
-        previousNode = currentNode; // SAVE THE NODE POINTER
-        if(valIsLessThan(pValue,currentNode.value )){
-            currentNode = currentNode.left ;
-        }
-        else{
-            currentNode = currentNode.right; 
-        }  
-    }while (currentNode !== null); 
-
-    return previousNode;
-}
-function insertIntoBst( pTheRoot, pValue){
-    var leaveNode;
-    leaveNode = findLeaveNode(pTheRoot,pValue);
-    addNode(leaveNode, pValue);
+    return currentNode;
 }
 
 function buildBinaryTree( dataSet){
-    var theRoot = new TreeNode();
+    theRoot = new TreeNode();
     var currentNode= theRoot;
     var index =0;
-
     currentNode.value = dataSet[index];     // seed the root with the first data value.
-    for (var index = 0; index < (dataSet.length-1); index++) {
-        // console.log( "index:", index,"nextostore:",dataSet[index+1]);
-        insertIntoBst( theRoot, dataSet[index+1]);
+    while(index <  dataSet.length){
+        console.log( "nodevalue:", currentNode.value,"  ", "index:", index,"nextostore:",dataSet[index+1]);
+        if(dataSet[index+1]<= currentNode.value){
+            currentNode = AddNode(theRoot, currentNode.left,dataSet[index+1]);
+        }
+        else{
+            currentNode = AddNode(theRoot, currentNode.right,dataSet[index+1]);
+        }  
     }
     return theRoot;
 }
 
 
 var binaryTree = buildBinaryTree([1,4,7,3,9,25,99,34,6,2]);
-
-//========================================================================================================
-printBinaryTreeInOrder(binaryTree);
 //var anotherTree = buildBinaryTree([7,44,33,3.4,2]);
 //console.log("end of unbalanced program");
 

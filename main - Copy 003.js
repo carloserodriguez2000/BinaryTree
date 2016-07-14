@@ -15,41 +15,27 @@ function TreeNode(value){
     this.value = value;
 }
 
-function valIsLessThan (toInsertVal, nodeVal ){
-    if(toInsertVal <= nodeVal) { return true;}
-    else {return false;}
-}
-function addNode(PNode,pValue){
-    if(valIsLessThan(pValue,PNode.value )){ 
-        PNode.left = new TreeNode(pValue);
-        console.log( "Left: ", pValue); 
+function AddNode(pTheRoot,PNode,pValue){
+    if(PNode === null){
+        PNode = new TreeNode(pValue);
+        return pTheRoot;
     }
     else{ 
-        PNode.right = new TreeNode(pValue);
-            console.log( "Right: ", pValue); 
+        return PNode;
     }
 }
 
-function findLeaveNode(pTheRoot, pValue)
-{
+function StoreValue( pTheRoot, pValue){
     var currentNode = pTheRoot;
-    var previousNode = null;
-    do{                             // navigate left OR right and add node on a new leave.
-        previousNode = currentNode; // SAVE THE NODE POINTER
-        if(valIsLessThan(pValue,currentNode.value )){
-            currentNode = currentNode.left ;
-        }
-        else{
-            currentNode = currentNode.right; 
-        }  
-    }while (currentNode !== null); 
-
-    return previousNode;
-}
-function insertIntoBst( pTheRoot, pValue){
-    var leaveNode;
-    leaveNode = findLeaveNode(pTheRoot,pValue);
-    addNode(leaveNode, pValue);
+    do{                                         // navigate left OR right and add node on a new leave.
+        if(pValue<= currentNode.value){
+                currentNode = AddNode(pTheRoot, currentNode.left, pValue);
+            }
+            else{
+                currentNode = AddNode(pTheRoot, currentNode.right, pValue);
+            }  
+    }while (currentNode !=pTheRoot); 
+        
 }
 
 function buildBinaryTree( dataSet){
@@ -58,18 +44,15 @@ function buildBinaryTree( dataSet){
     var index =0;
 
     currentNode.value = dataSet[index];     // seed the root with the first data value.
-    for (var index = 0; index < (dataSet.length-1); index++) {
-        // console.log( "index:", index,"nextostore:",dataSet[index+1]);
-        insertIntoBst( theRoot, dataSet[index+1]);
+    for (var index = 0; index < dataSet.length; index++) {
+        console.log( "index:", index,"nextostore:",dataSet[index+1]);
+        StoreValue( theRoot, dataSet[index+1]);
     }
     return theRoot;
 }
 
 
 var binaryTree = buildBinaryTree([1,4,7,3,9,25,99,34,6,2]);
-
-//========================================================================================================
-printBinaryTreeInOrder(binaryTree);
 //var anotherTree = buildBinaryTree([7,44,33,3.4,2]);
 //console.log("end of unbalanced program");
 
