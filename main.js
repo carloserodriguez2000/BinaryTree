@@ -10,6 +10,7 @@
 
 
 function TreeNode(value){
+    this.parent=null;
     this.left=null;
     this.right=null;
     this.value = value;
@@ -20,17 +21,19 @@ function valIsLessThan (toInsertVal, nodeVal ){
     else {return false;}
 }
 function addNode(PNode,pValue){
+    var newNode = new TreeNode(pValue);
     if(valIsLessThan(pValue,PNode.value )){ 
-        PNode.left = new TreeNode(pValue);
+        PNode.left = newNode;
         console.log( "Left: ", pValue); 
     }
     else{ 
-        PNode.right = new TreeNode(pValue);
-            console.log( "Right: ", pValue); 
+        PNode.right = newNode;
+        console.log( "Right: ", pValue); 
     }
+    return newNode;
 }
 
-function findLeaveNode(pTheRoot, pValue)
+function findLeafNode(pTheRoot, pValue)
 {
     var currentNode = pTheRoot;
     var previousNode = null;
@@ -46,33 +49,73 @@ function findLeaveNode(pTheRoot, pValue)
 
     return previousNode;
 }
-function insertIntoBst( pTheRoot, pValue){
-    var leaveNode;
-    leaveNode = findLeaveNode(pTheRoot,pValue);
-    addNode(leaveNode, pValue);
-}
 
 function buildBinaryTree( dataSet){
     var theRoot = new TreeNode();
-    var currentNode= theRoot;
+    var leafNode = null;
+    var newNode = null;
     var index =0;
 
-    currentNode.value = dataSet[index];     // seed the root with the first data value.
+    theRoot.value = dataSet[index];     // seed the root with the first data value.
     for (var index = 0; index < (dataSet.length-1); index++) {
-        // console.log( "index:", index,"nextostore:",dataSet[index+1]);
-        insertIntoBst( theRoot, dataSet[index+1]);
+        leafNode = findLeafNode(theRoot,dataSet[index+1]);
+        newNode = addNode(leafNode, dataSet[index+1]);
+        newNode.parent = leafNode;
     }
     return theRoot;
 }
 
+function printBinaryTreeInOrder( node){
+    if(node === null){
+        return;
+    }
+    else{
+        printBinaryTreeInOrder(node.left);
+        console.log("value: ",node.value);
+        printBinaryTreeInOrder(node.right);
+    }
+}
 
+
+
+function Flatten( node, numberList ,index){
+    if(node === null){
+        return index;
+    }
+    else{
+        index= Flatten(node.left,numberList,index);
+        numberList[index] = node.value;
+        index++;
+        console.log("value: ",node.value);
+        index =Flatten(node.right, numberList, index);
+        return index;
+    }
+}
+
+//==============================================================
+
+//==============================================================
+// BUILD THE TREE
+//==============================================================
 var binaryTree = buildBinaryTree([1,4,7,3,9,25,99,34,6,2]);
-
-//========================================================================================================
+//==============================================================
+//  PRINT THE TREE IN ORDER
+//==============================================================
 printBinaryTreeInOrder(binaryTree);
-//var anotherTree = buildBinaryTree([7,44,33,3.4,2]);
-//console.log("end of unbalanced program");
+//==============================================================
+// PUT THE DATA IN A LIST IN ORDER
+var listy = [];
+Flatten(binaryTree, listy, 0);
 
+for (var index = 0; index < listy.length ; index++) {
+    console.log( "value:", listy[index]);
+}
+/*
+
+var balancedTree = LoadBalanced(treeList);
+
+console.log("end of program");
+*/
 
 /*
 //=========================================

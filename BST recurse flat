@@ -1,0 +1,18 @@
+class Solution {
+private:
+    TreeNode* pre = NULL;
+    
+public:
+    void flatten(TreeNode* root) {
+        if(!root) return;
+        pre = root;
+        
+        TreeNode* right = root->right;
+        if(root->left) root->right = root->left;
+        flatten(root->left);
+        pre->right = right;
+        flatten(root->right);
+        
+        root->left = NULL;
+    }
+};

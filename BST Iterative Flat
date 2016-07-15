@@ -1,0 +1,23 @@
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        TreeNode* runner = root;
+        
+        while(runner){
+            if(runner->left){
+                TreeNode* right = runner->right;
+                runner->right = runner->left;
+                runner->left = nullptr;
+                runner = runner->right;
+                
+                TreeNode* rRunner = runner;             
+                while(rRunner->right){
+                    rRunner = rRunner->right;
+                }                   
+                rRunner->right = right;  /*rRunner is the new parent of `right`*/
+            }else{
+                runner = runner->right;    
+            }         
+        }
+    }
+};

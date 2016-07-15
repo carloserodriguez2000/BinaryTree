@@ -1,0 +1,34 @@
+function treeToList( theTree,index){
+    var list=[];
+    var treellinkedlist = theTree;
+    var node;
+    
+        //list[index]= BuildList(node);
+        BuildList(theTree);
+        node = treellinkedlist;
+        for (var index = 0; index < 10; index++) {
+             list[index] = node.value;
+             node = node.right;
+             console.log("values list: ",  list[index])
+        }
+    return treellinkedlist;
+}
+
+function BuildList(treeRoot){
+    var temp;
+    var right;
+    if(treeRoot === null){
+        return  ;
+    }
+    temp = treeRoot;
+    
+    right = treeRoot.right;
+    if(root.left!==null){
+        root.right = root.left;
+    } 
+
+    BuildList(treeRoot.left);
+    temp.right = right;
+    BuildList(treeRoot.right);
+    treeRoot.left = null; 
+}
